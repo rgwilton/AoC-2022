@@ -1,13 +1,29 @@
 package aoc
 
 import util.chaining.scalaUtilChainingOps
+import scala.annotation.tailrec
 
 // Split a string into an iterator of integers, one per line.
 extension (str: Iterator[String])
   def asIntegers: Iterator[Int] = str.map(_.toInt)
 
+extension (lines: Iterator[String])
+  def splitByEmptyLine: IndexedSeq[IndexedSeq[String]] =
+    val builder = IndexedSeq.newBuilder[IndexedSeq[String]]
+
+    @tailrec
+    def worker(lines: Iterator[String]): Unit =
+      val first = lines.takeWhile(_ != "")
+      builder += first.toVector
+      if lines.hasNext then worker(lines)
+    worker(lines)
+    builder.result()
+
 extension (str: Array[String])
   def asIntegers: Array[Int] = str.map(_.toInt)
+
+extension (str: IndexedSeq[String])
+  def asIntegers: IndexedSeq[Int] = str.map(_.toInt)
 
 extension (str: String)
   def asIntegers: Array[Int] = str.split(",").asInstanceOf[Array[String]].asIntegers

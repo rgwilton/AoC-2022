@@ -8,5 +8,5 @@ class Ex01Test:
   val result = Ex01.run(input.getLines)
   
   @Test def t1(): Unit = 
-    assertEquals(result.part1, 1387)
-    assertEquals(result.part2, 1362)
+    assertEquals(result.part1, 71023)
+    assertEquals(result.part2, 206289)

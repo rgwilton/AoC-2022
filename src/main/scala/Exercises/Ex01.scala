@@ -1,15 +1,21 @@
 package aoc
 
+import scala.collection.mutable.Buffer
+import scala.annotation.tailrec
+
 object Ex01 extends Exercise:
- type ParsedInput = IndexedSeq[Int]
+ type ParsedInput = IndexedSeq[IndexedSeq[Int]]
+ override type Common = IndexedSeq[Int]
 
-  def parseInput(input: Iterator[String]) = input.asIntegers.toIndexedSeq
+  def parseInput(input: Iterator[String]) =
+    input.splitByEmptyLine.map(_.asIntegers)
 
-  def increasing(x: Seq[Int]) = x(0) < x(1)   
+  def common(input: ParsedInput): Common =
+    input.map(_.sum)
 
-  def part1(using env:Env) = 
-    env.input.sliding(2).count(increasing)
+  def part1(input: ParsedInput, common: Common) = 
+    common.max
 
-  def part2(using env:Env) =
-    env.input.sliding(3).map(_.sum).sliding(2).count(increasing)
+  def part2(input: ParsedInput, common: Common) =
+    common.sorted.takeRight(3).sum
 

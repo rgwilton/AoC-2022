@@ -45,25 +45,22 @@ case class Result(name: String, part1: Any, p1Time: Double, part2: Any, p2Time: 
 
 trait Exercise:
   type ParsedInput
-  type CommonResult = Any
+  type Common
   val name = getClass.getSimpleName.nn.init
   val num = name.drop(2)
   def input = scala.io.Source.fromFile(s"input/input_${num}.txt").getLines
 
-  case class Env(input: ParsedInput, rawInput: Iterator[String], commonResult: CommonResult)
-
   def parseInput(input: Iterator[String]): ParsedInput
-  def common(input: ParsedInput): CommonResult = ()
-  def part1(using Env): Any
-  def part2(using Env): Any
+  def common(input: ParsedInput): Common
+  def part1(input: ParsedInput, commonRes: Common): Any
+  def part2(input: ParsedInput, commonRes: Common): Any
 
   def run: Result = run(input)
   def run(input: Iterator[String]): Result =
     measure {
       val (parsedInput, parseTime) = measure { parseInput(input) }
       val (commonRes, commonTime) = measure { common(parsedInput) }
-      given Env = Env(parsedInput, input, commonRes)
-      (measure { part1 },  measure { part2 }, parseTime, commonTime)
+      (measure { part1(parsedInput, commonRes) },  measure { part2(parsedInput, commonRes) }, parseTime, commonTime)
     } match
       case (((pt1, pt1Time), (pt2, pt2Time), parseTime, commonTime), totalTime) =>
         Result(name,
