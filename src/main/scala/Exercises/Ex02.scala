@@ -4,18 +4,16 @@ import scala.collection.mutable.Buffer
 import scala.annotation.tailrec
 
 object Ex02 extends Exercise:
- type ParsedInput = IndexedSeq[(Int, Int)]
- override type Common = ParsedInput
+ type ParsedInput = Iterator[(Int, Int)]
+ override type Common = Array[(Int, Int)]
 
-  val Pair = """(\w) (\w)""".r
   def parseInput(input: Iterator[String]) =
-    (for case Pair(a, b) <- input yield 
-      (1 + a.head - 'A', 1 + b.head - 'X')).toVector
-
-
-  def common(input: ParsedInput) = 
-    input
+    for line <- input yield
+      (1 + line(0) - 'A', 1 + line(2) - 'X')
     
+
+
+  def common(input: ParsedInput) = input.toArray
 
   def part1(common: Common) = 
     common.collect {

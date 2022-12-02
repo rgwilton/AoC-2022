@@ -30,7 +30,7 @@ import scala.util.Failure
         for Result(name, p1, p1t, p2, p2t, parseTime, commonTime, totalTime) <- results do 
           val p1time = parseTime + commonTime + p1t
           val p2time = parseTime + commonTime + p2t
-          val parseStr = if parseTime > 0.1 then f", parse: $parseTime%.1f ms" else ""
+          val parseStr = f"parse: $parseTime%.1f ms"
           val commonStr = if commonTime > 0.1 then f", common: $commonTime%.1f ms" else ""
 
           println(f"""$name%-5s => part 1: "$p1", $p1time%.1f ms; part 2: "$p2", $p2time%.1f ms; """ +
