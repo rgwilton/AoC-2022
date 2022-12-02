@@ -52,15 +52,15 @@ trait Exercise:
 
   def parseInput(input: Iterator[String]): ParsedInput
   def common(input: ParsedInput): Common
-  def part1(input: ParsedInput, commonRes: Common): Any
-  def part2(input: ParsedInput, commonRes: Common): Any
+  def part1(commonRes: Common): Any
+  def part2(commonRes: Common): Any
 
   def run: Result = run(input)
   def run(input: Iterator[String]): Result =
     measure {
       val (parsedInput, parseTime) = measure { parseInput(input) }
       val (commonRes, commonTime) = measure { common(parsedInput) }
-      (measure { part1(parsedInput, commonRes) },  measure { part2(parsedInput, commonRes) }, parseTime, commonTime)
+      (measure { part1(commonRes) },  measure { part2(commonRes) }, parseTime, commonTime)
     } match
       case (((pt1, pt1Time), (pt2, pt2Time), parseTime, commonTime), totalTime) =>
         Result(name,
