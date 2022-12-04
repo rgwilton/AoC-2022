@@ -11,17 +11,12 @@ object Ex04 extends Exercise:
 
   def common(parsedInput: ParsedInput) = parsedInput.toArray
 
-  extension (range: Range)
-    def includes(r2: Range) = r2.start >= range.start && r2.end <= range.end
-    def overlaps(r2: Range) = (r2.start <= range.end && r2.end >= range.start) ||
-                              (range.start <= r2.end && range.end >= r2.start)
-  def part1(ranges: Common) = 
-    ranges
-    .filter { (r1, r2) => (r1 includes r2) || (r2 includes r1) }
-    .length
-
-  def part2(ranges: Common) =
-    ranges
-    .filter { (r1, r2) => r1 overlaps r2 }
-    .length
+  def includes(r1: Range, r2: Range) = 
+    (r2.start >= r1.start && r2.end <= r1.end) || (r1.start >= r2.start && r1.end <= r2.end)
     
+  def overlaps(r1: Range, r2: Range) = 
+    (r2.start <= r1.end && r2.end >= r1.start) || (r1.start <= r2.end && r1.end >= r2.start)
+
+  def part1(ranges: Common) = ranges.count(includes)
+
+  def part2(ranges: Common) = ranges.count(overlaps)
