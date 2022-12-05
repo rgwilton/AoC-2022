@@ -15,7 +15,7 @@ object Ex04 extends Exercise:
     (r2.start >= r1.start && r2.end <= r1.end) || (r1.start >= r2.start && r1.end <= r2.end)
     
   def overlaps(r1: Range, r2: Range) = 
-    (r2.start <= r1.end && r2.end >= r1.start) || (r1.start <= r2.end && r1.end >= r2.start)
+    r2.start <= r1.end && r2.end >= r1.start
 
   def part1(ranges: Common) = ranges.count(includes)
 
