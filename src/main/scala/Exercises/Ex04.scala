@@ -1,8 +1,8 @@
 package aoc
 
 object Ex04 extends Exercise:
- type ParsedInput = Iterator[(Range, Range)]
- override type Common = Array[(Range, Range)]
+  type ParsedInput = Iterator[(Range, Range)]
+  override type Common = Array[(Range, Range)]
 
   val Line = """(\d+)-(\d+),(\d+)-(\d+)""".r
   def parseInput(input: Iterator[String]) = 

@@ -1,8 +1,8 @@
 package aoc
 
 object Ex03 extends Exercise:
- type ParsedInput = Array[String]
- override type Common = ParsedInput
+  type ParsedInput = Array[String]
+  override type Common = ParsedInput
 
   def parseInput(input: Iterator[String]) = input.toArray
 

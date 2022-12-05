@@ -1,8 +1,8 @@
 package aoc
 
 object Ex02 extends Exercise:
- type ParsedInput = Iterator[(Int, Int)]
- override type Common = Array[(Int, Int)]
+  type ParsedInput = Iterator[(Int, Int)]
+  override type Common = Array[(Int, Int)]
 
   def parseInput(input: Iterator[String]) =
     for line <- input yield
