@@ -23,18 +23,18 @@ object Ex07 extends Exercise:
 
     for line <- input do
       line match
-        case CdR(path) =>
-          path match 
-            case "/" => curPath = List()
-            case ".." => curPath = curPath.tail
-            case dirname => curPath = dirname :: curPath
+        case FileR(size, filename) =>
+          updateFsDirectory(curPath, filename)
+          fs += (filename :: curPath) -> size.toInt
 
         case DirR(dirName) => 
           updateFsDirectory(curPath, dirName)
 
-        case FileR(size, filename) =>
-          updateFsDirectory(curPath, filename)
-          fs += (filename :: curPath) -> size.toInt
+        case CdR(path) =>
+          path match 
+            case ".." => curPath = curPath.tail
+            case "/" => curPath = List()
+            case dirname => curPath = dirname :: curPath
 
         case _ => // Ignore the ls command.
     fs
