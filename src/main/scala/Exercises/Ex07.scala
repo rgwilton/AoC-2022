@@ -10,7 +10,7 @@ object Ex07 extends Exercise:
   type DirContents = Set[String]
   type FileSystem = mutable.Map[Path, FileSize | DirContents]
 
-  def parseInput(input: Iterator[String]) = {
+  def parseInput(input: Iterator[String]) =
     val CdR = """[$] cd ([a-z./]+)""".r
     val DirR = """dir ([a-z.]+)""".r
     val FileR = """(\d+) ([a-z.]+)""".r
@@ -38,7 +38,6 @@ object Ex07 extends Exercise:
 
         case _ => // Ignore the ls command.
     fs
-  }
 
   def common(fs: FileSystem) =
     // Build a map from dir path to size.  Root directory is listed with an empty path.
