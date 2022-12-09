@@ -15,53 +15,34 @@ object Ex08 extends Exercise:
   def part1(grid: Grid) =
     val height = grid.length
     val width = grid(0).length
-    val visible = Array.fill(width, height)(0)
+    val visible = mutable.Set[(Int, Int)]()
+
+    def process(x: Int, y: Int, highest: Int) =
+      if grid(x)(y) > highest then
+        visible += ((x, y))
+        grid(x)(y)
+      else
+        highest
 
     for y <- 0 until height do
-      visible(0)(y) = 1
-      var highest = grid(0)(y)
-      for x <- 0 until width do
-        if grid(x)(y) > highest then
-          visible(x)(y) = 1
-          highest = grid(x)(y)
+      var highest = -1
+      for x <- 0 until width do 
+        highest = process(x, y, highest)
 
-      visible(width - 1)(y) = 1
-      highest = grid(width - 1)(y)
-      for x <- width - 1 to 0 by -1 do
-        if grid(x)(y) > highest then
-          visible(x)(y) = 1
-          highest = grid(x)(y)
+      highest = -1
+      for x <- (0 until width).reverse do 
+        highest = process(x, y, highest)
 
     for x <- 0 until width do
-      visible(x)(0) = 1
-      var highest = grid(x)(0)
+      var highest = -1
       for y <- 0 until height do
-        if grid(x)(y) > highest then
-          visible(x)(y) = 1
-          highest = grid(x)(y)
+        highest = process(x, y, highest)
+      highest = -1
+      for y <- (0 until height).reverse do
+        highest = process(x, y, highest)
 
-      visible(x)(height - 1) = 1
-      highest = grid(x)(height - 1)
-      for y <- height - 1 to 0 by -1 do
-        if grid(x)(y) > highest then
-          visible(x)(y) = 1
-          highest = grid(x)(y)
+    visible.size
 
-      // x.map { x => (x, grid(x)(y))}
-      // .sliding(2)
-      // .takeWhile { case Seq((a,b),(c,d)) => b <= d }
-      // .foreach { case Seq((a,b),(c,d)) => visible(c)(y) = 1 }
-
-    // for y <- 0 until grid.length do
-    //   println(visible(y).mkString(""))
-
-    var count = 0
-    for x <- 0 until width
-        y <- 0 until height do
-          count += visible(x)(y)
-    count
-
-    
   def part2(grid: Grid) =
     val height = grid.length
     val width = grid(0).length
