@@ -14,6 +14,7 @@ object Ex10 extends Exercise:
   def parseInput(input: Iterator[String]) = input.toSeq
 
   def common(input: ParsedInput) =
+    // Generate a sequence of register values, starting from the initial value.
     var reg = 1
     reg +:
     input
@@ -26,6 +27,7 @@ object Ex10 extends Exercise:
     }
 
   def part1(regValues: Seq[Int]) =
+    // Caculate sum of 6 of (reg * index) starting an 20, then every 40.
     regValues
     .iterator
     .zip(Iterator.from(1))
@@ -36,6 +38,7 @@ object Ex10 extends Exercise:
     .sum
 
   def part2(regValues: Seq[Int]) =
+    // Convert into a display of 40 by 6 to show letters.
     val display = 
       regValues
       .iterator
