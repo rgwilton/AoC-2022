@@ -20,5 +20,6 @@ lazy val root = project
     scalaVersion := scala3Version,
     Compile / mainClass := Some("aoc.aoc"),
     libraryDependencies ++= Seq("com.novocode" % "junit-interface" % "0.11" % "test",
-                                "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4")
+                                "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4",
+                                "com.lihaoyi" %% "fastparse" % "2.3.3-36-a460aa") //"2.2.2",)
   )
