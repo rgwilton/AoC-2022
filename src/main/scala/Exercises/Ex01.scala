@@ -1,7 +1,6 @@
 package aoc
 
 import scala.collection.mutable.Buffer
-import scala.annotation.tailrec
 
 object Ex01 extends Exercise:
   type ParsedInput = IndexedSeq[IndexedSeq[Int]]

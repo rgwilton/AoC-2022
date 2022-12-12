@@ -1,7 +1,6 @@
 package aoc
 
 import scala.collection.mutable
-import scala.annotation.tailrec
 import fastparse._, MultiLineWhitespace._
 
 object Ex11 extends Exercise:

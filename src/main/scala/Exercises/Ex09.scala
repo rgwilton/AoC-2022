@@ -1,7 +1,6 @@
 package aoc
 
 import scala.collection.mutable
-import scala.annotation.tailrec
 
 object Ex09 extends Exercise:
   type ParsedInput = Seq[(Char, Int)]
