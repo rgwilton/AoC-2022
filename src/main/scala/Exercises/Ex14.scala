@@ -5,7 +5,7 @@ import fastparse._
 
 object Ex14 extends Exercise:
   type ParsedInput = Seq[Line]
-  override type Common = Seq[Line]
+  override type Common = (Array[Array[Char]], Int, Int, Int)
 
   case class Pos(x: Int, y: Int)
   case class Line(positions: Seq[Pos])
@@ -19,65 +19,9 @@ object Ex14 extends Exercise:
 
   def parseInput(input: Iterator[String]) = 
     val res = parse(input.mkString("\n"), Parser.inputP(_))
-    val lines = res.get.value
-    // println(lines.mkString("Start\n", "\n", "\n\n"))
-    lines
+    res.get.value
 
-  def common(input: ParsedInput) = input
-
-  def part1(lines: Seq[Line]) = 
-    val xPositions = 
-      for l <- lines
-          pos <- l.positions yield pos.x
-    val minX = xPositions.min
-    val maxX = xPositions.max
-    val yPositions = 
-      for l <- lines
-          pos <- l.positions yield pos.y
-    val maxY = yPositions.max
-    val cave = Array.fill(maxY + 1,maxX + 1)('.')
-
-    // Draw lines.
-    for line <- lines do
-      line.positions.sliding(2).foreach {
-        case Seq(Pos(x1, y1), Pos(x2, y2)) =>
-          if x1 == x2 then
-            val start = y1 min y2
-            val end = y1 max y2
-            for y <- start to end do
-              cave(y)(x1) = '#'
-          else
-            val start = x1 min x2
-            val end = x1 max x2
-            for x <- start to end do
-              cave(y1)(x) = '#'       
-      }
-
-    // Simulate sand.
-    var count = 0
-    var sX = 500
-    var sY = 0
-    while sY != maxY do
-      if cave(sY + 1)(sX) == '.' then
-        sY += 1
-      else if cave(sY + 1)(sX - 1) == '.' then 
-        sX -= 1; sY += 1
-      else if cave(sY + 1)(sX + 1) == '.' then
-        sX += 1; sY += 1
-      else
-        cave(sY)(sX) = 'o'
-        sX = 500
-        sY = 0
-        count += 1
-
-    // for y <- 0 to maxY do
-    //   for x <- minX to maxX do print(cave(y)(x))
-    //   print("\n")          
-
-    //println(s"minX=$minX maxX=$maxX maxY=$maxY")
-    count
-
-  def part2(lines: Seq[Line]) =
+  def common(lines: ParsedInput) =
     val yPositions = 
       for l <- lines
           pos <- l.positions yield pos.y
@@ -109,29 +53,50 @@ object Ex14 extends Exercise:
     for x <- 0 until maxX do 
       cave(maxY)(x) = '#'
 
+    (cave, minX, maxX, maxY)
+
+  def part1(common: Common) = 
+    val (startCave, minX, maxX, maxY) = common
+    val cave = startCave.map(_.clone)
+
     // Simulate sand.
-    var finished = false
     var count = 0
-    var sX = 500
-    var sY = -1
-    while !finished do
+    var starts = List(Pos(500, 0))
+    val maxRow = maxY - 2
+    while starts.head.y != maxRow do
+      val sX = starts.head.x
+      val sY = starts.head.y
       if cave(sY + 1)(sX) == '.' then
-        sY += 1
+        starts ::= Pos(sX, sY + 1)
       else if cave(sY + 1)(sX - 1) == '.' then 
-        sX -= 1; sY += 1
+        starts ::= Pos(sX - 1, sY + 1)
       else if cave(sY + 1)(sX + 1) == '.' then
-        sX += 1; sY += 1
+        starts ::= Pos(sX + 1, sY + 1)
       else
         cave(sY)(sX) = 'o'
         count += 1
-        if sY == 0 then finished = true
-        sX = 500
-        sY = 0
+        starts = starts.tail      
+    count
 
+  def part2(common: Common) =
+    val (startCave, minX, maxX, maxY) = common
+    val cave = startCave.map(_.clone)
 
-    // for y <- 0 to maxY do
-    //   for x <- minX to maxX do print(cave(y)(x))
-    //   print("\n")          
+    // Simulate sand.
+    var count = 0
+    var starts = List(Pos(500, 0))
+    while starts.nonEmpty do
+      val sX = starts.head.x
+      val sY = starts.head.y
+      if cave(sY + 1)(sX) == '.' then
+        starts ::= Pos(sX, sY + 1)
+      else if cave(sY + 1)(sX - 1) == '.' then 
+        starts ::= Pos(sX - 1, sY + 1)
+      else if cave(sY + 1)(sX + 1) == '.' then
+        starts ::= Pos(sX + 1, sY + 1)
+      else
+        cave(sY)(sX) = 'o'
+        count += 1
+        starts = starts.tail
 
-    //println(s"minX=$minX maxX=$maxX maxY=$maxY")
     count
